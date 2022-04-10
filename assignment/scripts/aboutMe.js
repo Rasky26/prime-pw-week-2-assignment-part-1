@@ -79,16 +79,16 @@ let adventurous = true
 let food = 'lasagna'
 
 // 9 - Create a variable called `pets` and set it to the value of the number of pets you have
-let pets = -100
+let pets = 0 // Later logic accounts for negative numbers or bad values, such as strings
 
 // 10 - Create a variable called `friendsPets` and assign it the value of the number of pets your friend has
-let friendsPets = -2
+let friendsPets = 2 // Later logic accounts for negative numbers or bad values, such as strings
 
 // 11 - Add two pets to your `pets` variable
 pets += 2
 
 // 12 - Create a constant variable called `allowedPets` and set it to a number value of your choice
-const allowedPets = 2
+const allowedPets = 2 // I am unwavering on this number
 
 // 13 - Create a conditional: if adventurous is true, console log "Adventures are great!", 
 // if it's not true, console log "How about we stay home?"
@@ -124,11 +124,56 @@ if (pets < allowedPets) {
 // assigns the highest value to `mostPets`. There's several possibilities --
 // be sure to think through all the scenarios. 
 // console.log `mostPets` after the conditional has run.
+
+// Defind the variable here
 let mostPets = null
-if (pets < 0 || friendsPets < 0) {
+
+// If either of the pet values are not numbers, fault out of the `if` block
+if (!isNumber(pets) || !isNumber(friendsPets)) {
+    console.log("A pet value is incorrect. Check both pets: %s and friendsPets: %s for issues", pets, friendsPets)
+
+// Check for negative values
+} else if (pets < 0 || friendsPets < 0) {
+
+    // Are both values negative?
     if (pets < 0 && friendsPets < 0) {
         console.log("%s and their friend broke the universe and have %i pets somehow.", fullName, pets + friendsPets)
-    } // String formatting: https://levelup.gitconnected.com/add-styles-and-formatting-to-your-console-log-messages-in-javascript-5f14819b1c5d
+        // String formatting: https://levelup.gitconnected.com/add-styles-and-formatting-to-your-console-log-messages-in-javascript-5f14819b1c5d
+        // Not assigning `mostPets` as negatives values don't make sense here
+
+    // Are `pets` negative
+    } else if (pets < 0) {
+        console.log("%s is a wizard and has %i pets. Must be a necromancer!", fullName, pets)
+        mostPets = friendsPets // Therefore the friend has more pets
+
+    // Otherwise, `friendsPets` must be negative
+    } else {
+        console.log("%s's friend is a dirty liar and says they have %i pets.", fullName, friendsPets)
+        mostPets = pets // Therefore, you have the most pets
+    }
+
+// If both `pets` and `friendsPets` are zero, then there are no pets to analyze.
+// Since zero is equivalent to `false`, I can test if both values are not false here.
+} else if (!pets && !friendsPets) {
+    console.log("Neither you or your friend have any pets. Why are we competing to see who has the most?")
+    // Set `mostPets` to zero
+    mostPets = 0
+
+// Test if there is a tie for the number of pets between you and your friend
+} else if (pets === friendsPets) {
+    console.log("There is no reason to compete. Both %s and their friend have %i pets each!", fullName, pets)
+    // Choose either value as the `mostPets` value
+    mostPets = pets
+
+// Check if you have more pets than your friend
+} else if (pets > friendsPets) {
+    console.log("No question that %s is the best as they have %i pets", fullName, pets)
+    // Set `mostPets` to the `pets` value
+    mostPets = pets
+} else {
+    console.log("%s is polite and allows their friend to have the most pets", fullName)
+    // Set `mostPets` to the `friendsPets` value
+    mostPets = friendsPets
 }
 
 // 17 - Write a *switch* statement that logs:
@@ -138,6 +183,22 @@ if (pets < 0 || friendsPets < 0) {
 //      Otherwise, log "Luck is what happens when preparation meets opportunity"
 //      You'll need to research how to use switch statements!
 
+// Used the reference: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Statements/switch
+switch (luckyNumber) {
+    case 1:
+        console.log('First is the worst')
+        break
+    case 2:
+        console.log('Second is the best')
+        break
+    case 3:
+        console.log('Third is the one with the polka dot dress')
+        break
+    default:
+        console.log("Luck is what happens when preparation meets opportunity")
+}
+
 // 18 -- Rewrite question 13 with a `ternary` operator. You'll need to do research!
 
-
+// Answer derived from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/Conditional_Operator
+adventurous ? console.log("Adventures are great!") : console.log('How about we stay home?')
