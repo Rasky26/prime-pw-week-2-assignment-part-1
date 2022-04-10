@@ -1,3 +1,10 @@
+// *Arrow function reference from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
+// *Number formatting came from: https://stackoverflow.com/questions/5731193/how-to-format-numbers 
+let formatNumber = (num, decimals) => num.toLocaleString(
+    undefined, // Allow browser to choose locality formatting, otherwise could have forced locality with 'en-US'
+    { minimumFractionDigits: decimals } // How many decimal places show it display. Use zero for integers.
+)
+
 // REQUIRED FEATURES:
 // 1 - Create a variable called `firstName` and assign it the value of your first name
 const firstName = 'Colin'
@@ -18,6 +25,8 @@ let luckyNumber = 22686
 // 6 - Console log this sentence, adding in the variables you created above: 
 // 'My name is (full name), and I think (lucky number) is a winner!'.
 // Refer back to the videos if you need help with this one.
+console.log('My name is', fullName, 'and I think', formatNumber(luckyNumber, 0), 'is a winner!')
+
 console.log('My name is', fullName, 'and I think', luckyNumber.toLocaleString(
     undefined, // Allow browser to choose locality formatting, otherwise could have forced locality with 'en-US'
     { minimumFractionDigits: 0 } // Keep as an integer, set value to zero.
@@ -30,10 +39,10 @@ let adventurous = true
 let food = 'lasagna'
 
 // 9 - Create a variable called `pets` and set it to the value of the number of pets you have
-let pets = 0
+let pets = -100
 
 // 10 - Create a variable called `friendsPets` and assign it the value of the number of pets your friend has
-let friendsPets = 2
+let friendsPets = -2
 
 // 11 - Add two pets to your `pets` variable
 pets += 2
@@ -49,15 +58,24 @@ if (adventurous) {
     console.log('How about we stay home?')
 }
 
-
 // 14 - Create a compound conditional: if luckyNumber is 2 and adventurous is true,
 // console log "Roll the dice!"
+if (luckyNumber === 2 && adventurous ) {
+    console.log('Roll the dice!')
+}
 
 // 15 - Write a conditional that console logs "I can have more pets!" 
 //if the value of `pets` is less than the value of `allowedPets`,
 // console logs "I have enough pets" if the value of `pets` is equal to the value of `allowedPets`,
 // and console logs "Oh no, I have too many pets!"
 // if the value of `pets` is greater than the value of `allowedPets`.
+if (pets < allowedPets) {
+    console.log('I can have more pets!')
+} else if (pets > allowedPets) {
+    console.log('Oh no, I have too many pets!')
+} else {
+    console.log('I have enough pets')
+}
 
 // STRETCH GOALS:
 
@@ -66,6 +84,12 @@ if (adventurous) {
 // assigns the highest value to `mostPets`. There's several possibilities --
 // be sure to think through all the scenarios. 
 // console.log `mostPets` after the conditional has run.
+let mostPets = null
+if (pets < 0 || friendsPets < 0) {
+    if (pets < 0 && friendsPets < 0) {
+        console.log("%s and their friend broke the universe and have %i pets somehow.", fullName, pets + friendsPets)
+    } // String formatting: https://levelup.gitconnected.com/add-styles-and-formatting-to-your-console-log-messages-in-javascript-5f14819b1c5d
+}
 
 // 17 - Write a *switch* statement that logs:
 //      "First is the worst" if your lucky number is 1
