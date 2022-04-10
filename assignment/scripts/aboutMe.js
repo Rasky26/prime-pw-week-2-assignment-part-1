@@ -1,9 +1,54 @@
-// *Arrow function reference from: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/Arrow_functions
-// *Number formatting came from: https://stackoverflow.com/questions/5731193/how-to-format-numbers 
-let formatNumber = (num, decimals) => num.toLocaleString(
-    undefined, // Allow browser to choose locality formatting, otherwise could have forced locality with 'en-US'
-    { minimumFractionDigits: decimals } // How many decimal places show it display. Use zero for integers.
-)
+// Source: https://stackoverflow.com/questions/1303646/check-whether-variable-is-number-or-string-in-javascript
+// Used to verify the variable being evaluated against is a number, and not something else (i.e. string, obj, etc.)
+// The `isNaN` stands for 'is Not a Number', but with the `!` that reverses the boolean check, essentially making
+// each evaluation return `true` if it finds a valid number.
+//
+// FIRST PART -- `!isNaN(parseFloat(n))`:
+// In testing, I found the `parseFloat` steps through input and evaluates if the character is a number or a `.`
+// If it finds ANY other value, it stops parsing and returns any numbers found prior to that break. If no numbers were
+// found when the evaulation was stopped, then it returns a value of `NaN`. On its own, this would allow values such as
+// '123abc' to evaluate as `true`
+//
+// EXAMPLE:
+//  parseFloat('123') returns `123`
+//  parseFloat('1.2') returns `1.2`
+//  parseFloat('1,234') returns `1`
+//  parseFloat('123abc') returns `123`
+//  parseFloat('abc123') returns `NaN`
+//
+// SECOND PART -- `!isNaN(n - 0)`:
+// Because values such as '123abc' validate as `true` (because parseFloat would return `123`), this second step is used
+// to check that the FULL value can be calulated against. The example from SO used zero, but any number would suffice.
+
+// EXAMPLE:
+//  !isNaN('123' - 0) returns `true` (JS automatically evaluates strings as potential numbers first, so this returns `123`)
+//  !isNaN('123abc' - 0) returns 'false`
+function isNumber(n) { return !isNaN(parseFloat(n)) && !isNaN(n - 0) }
+
+// Function link: https://www.w3schools.com/js/js_functions.asp
+//
+// Accepts two inputs: a supposed number value, and the number of decimals to return in the output.
+// This function checks that the 
+function formatNumber(num, decimals) {
+    // Validate that the `num` variable is indeed a number and ONLY a number
+    if (isNumber(num) && isNumber(decimals)) {
+        // Number formatting came from: https://stackoverflow.com/questions/5731193/how-to-format-numbers
+        return num.toLocaleString(
+            undefined, // Allow browser to choose locality formatting, otherwise could have forced locality with 'en-US'
+            { minimumFractionDigits: ~~decimals } // How many decimal places show it display. Use zero for integers.
+            // The above line uses `~~` (two squiggles) to return a floor value for decimal, ensuring the number is an integer.
+            // That technique was taken from: https://stackoverflow.com/a/8823272
+        )
+    } else {
+        if (!isNumber(num) && !isNumber(decimals)) {
+            console.log("%c Both the number value of `%s` and the decimal value of `%s` are not valid numbers, please check your inputs", 'color: #ffcccb; font-weight: bold; background-color: #222', num, decimals)
+        } else if (!isNumber(num)) {
+            console.log("%c The number value `%s` is not a valid number, please check your input", 'color: #ffcccb; font-weight: bold; background-color: #222', num)
+        } else {
+            console.log("%c The decimal place value of `%s` is not a valid number, please check your input", 'color: #ffcccb; font-weight: bold; background-color: #222', decimals)
+        }
+    }
+}
 
 // REQUIRED FEATURES:
 // 1 - Create a variable called `firstName` and assign it the value of your first name
@@ -25,12 +70,7 @@ let luckyNumber = 22686
 // 6 - Console log this sentence, adding in the variables you created above: 
 // 'My name is (full name), and I think (lucky number) is a winner!'.
 // Refer back to the videos if you need help with this one.
-console.log('My name is', fullName, 'and I think', formatNumber(luckyNumber, 0), 'is a winner!')
-
-console.log('My name is', fullName, 'and I think', luckyNumber.toLocaleString(
-    undefined, // Allow browser to choose locality formatting, otherwise could have forced locality with 'en-US'
-    { minimumFractionDigits: 0 } // Keep as an integer, set value to zero.
-  ), 'is a winner!') // Formatting came from: https://stackoverflow.com/questions/5731193/how-to-format-numbers
+console.log('My name is %s and I think %s is a winner!', fullName, formatNumber(luckyNumber, 0))
 
 // 7 - Create a variable named `adventurous` and set it to a boolean value (true or false)
 let adventurous = true
